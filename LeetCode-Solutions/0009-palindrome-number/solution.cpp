@@ -1,12 +1,19 @@
 class Solution {
 public:
     bool isPalindrome(int x) {
-        string s = to_string(x);
-        int n = s.size();
-        for(int i = 0; i<n/2; ++i){
-            if(s[i] != s[n-i-1])
-                return false;
+        if (x<0) return false;
+        long long org = x;
+        long long reverse = 0;
+        //use mod 10 to get value at idx i
+        while(x>0){
+            long long number = x%10;
+
+//       121
+//      121 % 10 = 1
+//      121 / 10 = 12
+            reverse = reverse*10 + number;
+            x/=10;
         }
-        return true;
+        return reverse == org;
     }
 };
