@@ -1,34 +1,25 @@
+#pragma GCC optimize("O3,unroll-loops")
 class Solution {
 public:
 
-
-    void wordCount(string str, unordered_map<char,int> &tmp){
-        for(char c : str){tmp[c]++; }
-    }
-
     int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
-        int ans = 0;
-        int n = words.size();
-        unordered_map<char,int>mp;
-        for(char c : letters){mp[c]++;}
+        int n = words.size(), ans = 0;
+        int mp[26] = {};
+        for(char c : letters) 
+            {mp[c - 'a']++;}
         for(int bitmask = 0; bitmask < (1<<n); ++bitmask){
-            unordered_map<char,int>tmp;
+            int tmp[26] = {};
             for(int j = 0; j<n; ++j){
-                if( bitmask & (1<<j)){
-                    wordCount(words[j], tmp);
-                }
+                if(bitmask & (1<<j))
+                    for(char c : words[j]) 
+                        {tmp[c - 'a']++;}
             }
-            bool flag = true;
             int sc = 0;
-            for(auto it : tmp){
-                if(mp[it.first] < it.second){flag = false; break;}
-                sc += score[it.first - 'a']*it.second;
+            for(int i = 0; i<26; ++i){
+                if(mp[i] < tmp[i]){sc = 0; break;}
+                sc += score[i]*tmp[i];
             }
-            if(flag){
-                //for(auto it : tmp){cout << it.first << ": " << it.second << ' ';}
-                //cout << "score: " << sc << '\n';
-                ans = max(ans,sc);
-            }
+            if(sc) ans = max(ans,sc);
         }
         return ans;
     }
