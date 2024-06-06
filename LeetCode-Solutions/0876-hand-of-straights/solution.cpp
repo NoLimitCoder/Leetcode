@@ -1,8 +1,9 @@
+#pragma GCC optimize("O3,unroll-loops")
 class Solution {
 public:
     bool isNStraightHand(vector<int>& hand, int groupSize) {
         if(hand.size() % groupSize != 0) return false;
-        map<int,int> mp;
+        unordered_map<int,int> mp;
         for(int a : hand){
             mp[a]++;
         }
