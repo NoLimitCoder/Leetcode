@@ -1,52 +1,34 @@
+auto init = [](){ ios::sync_with_stdio(0); cin.tie(0); cout.tie(0); return 'c'; }();
+#define rep(i,n) for(int i = 0; i<n; ++i)
+typedef vector<int> VI; typedef vector<VI> VVI;
 class Solution {
 public:
 
-int n;
-vector<vector<int>> adj;
-vector<char> color;
-vector<int> parent;
-int cycle_start, cycle_end;
+bool flag;
+VVI adj;
+VI vis;
+//cycle check | 0->unvisited | 1->processing | 2->visited
 
-bool dfs(int v) {
-    color[v] = 1;
-    for (int u : adj[v]) {
-        if (color[u] == 0) {
-            parent[u] = v;
-            if (dfs(u))
-                return true;
-        } else if (color[u] == 1) {
-            cycle_end = v;
-            cycle_start = u;
-            return true;
+    void dfs(int u){
+        vis[u] = 1;
+        for(int v : adj[u]){
+            if(!vis[v]) 
+                dfs(v);
+            else if(vis[v] == 1){flag = 0; return;}
         }
+        vis[u] = 2;
     }
-    color[v] = 2;
-    return false;
-}
-
-bool no_cycle() {
-    color.assign(n, 0);
-    parent.assign(n, -1);
-    cycle_start = -1;
-    cycle_end = -1;
-    for (int v = 0; v < n; v++) {
-        if (color[v] == 0 && dfs(v))
-            break;
-    }
-    if (cycle_start == -1) {
-        return true;
-    }
-    return false;
-}
-
 
     bool canFinish(int N, vector<vector<int>>& A) {
-        n = N;
-        adj = vector<vector<int>>(N);
-        for(int i=0;i<A.size();i++){
-            int u=A[i][0], v=A[i][1];
+        vis = VI(N,0); adj = VVI(N,VI(0)); flag = 1;
+        rep(i,A.size()){
+            int u = A[i][0], v = A[i][1];
             adj[v].push_back(u);
         }
-    return no_cycle();
+        rep(u,N){
+            if(!vis[u])
+                dfs(u);
+        }
+        return flag;
     }
 };
