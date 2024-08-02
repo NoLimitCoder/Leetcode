@@ -23,6 +23,7 @@ public:
         so we just take the minimun value we find across selecting all possible values of n which has to be <= to total number of a's
         */
 
+/*
         //compute noise suffix for a's
         int y = 0; for(char c : s){ y += c=='a'; }
         //compute noise for b's as prefix and calculate answer
@@ -34,5 +35,23 @@ public:
             ans = min(ans, x+y);
         }
         return ans;
+*/
+    //dp solution
+    int n = s.size();
+    int dp[n][2]; // dp[i][0] -> xxxxa  |  dp[i][1] -> xxxxb
+    memset(dp,0,sizeof(dp));
+    dp[0][0] += (s[0]=='b');
+    dp[0][1] += (s[0]=='a');
+    for(int i = 1; i<n; ++i){
+        if(s[i] == 'a'){
+            dp[i][0] = dp[i-1][0];
+            dp[i][1] = dp[i-1][1] + 1;
+        }else {
+            dp[i][0] = dp[i-1][0] + 1;
+            dp[i][1] = min(dp[i-1][1], dp[i-1][0]);
+        }
+        //cout  << dp[i][0] << ' ' << dp[i][1] << '\n';
     }
+    return min(dp[n-1][0], dp[n-1][1]);
+  }
 };
