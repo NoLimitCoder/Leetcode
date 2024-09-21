@@ -15,7 +15,6 @@ struct Trie{
             int i = c-'0';
             if(cur->child[i] == NULL)
                 cur->child[i] = new vertex(i);
-            x/=10;
             cur = cur->child[i];
         }
         cur->end = 1;
@@ -35,5 +34,6 @@ struct Trie{
         for(int i = 1; i<=n; ++i) trie.insert(i);
         trie.dfs(trie.root,ans,0);
         return ans;
+        
     }
 };
