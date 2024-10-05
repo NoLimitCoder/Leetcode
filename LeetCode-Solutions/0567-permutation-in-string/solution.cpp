@@ -3,8 +3,7 @@ class Solution {
 public:
 
     bool compare(vector<int> &a, vector<int> &b){
-        for(int i = 0; i<26; ++i)
-            {if(a[i] != b[i] && a[i] != -1) return false;}
+        for(int i = 0; i<26; ++i) {if(a[i] != b[i] && a[i] != -1) return false;}
         return true;
     }
 
