@@ -14,31 +14,20 @@
  * }
  */
 class Solution {
-    public ArrayList<String> A;
-
-    public void dfs(TreeNode root, String currentNumber){
+    int sum;
+    public void dfs(TreeNode root, Integer currentNumber){
         if(root == null) return;
-        
         if(root.left == null && root.right == null){
-            //System.out.printf("%d ",root.val);
-            currentNumber += Integer.toString(root.val);
-            A.add(currentNumber);
+            currentNumber*=10; currentNumber += root.val;
+            sum += currentNumber;
             return;
         }
-        currentNumber += Integer.toString(root.val);
+        currentNumber*=10; currentNumber += root.val;
         dfs(root.left,currentNumber); dfs(root.right,currentNumber);
     }
-
-
     public int sumNumbers(TreeNode root) {
-        A = new ArrayList<String>();
-        dfs(root,"");
-        int sum = 0;
-       // System.out.printf("\n");
-        for(int i = 0; i<A.size(); ++i){
-            //System.out.printf("%s ",A.get(i));
-            sum += Integer.parseInt(A.get(i));
-        }
+        sum = 0;
+        dfs(root,0);
         return sum;
     }
 }
