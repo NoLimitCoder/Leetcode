@@ -1,14 +1,14 @@
 class Solution {
 public:
     long long maximumValueSum(vector<int>& A, int k, vector<vector<int>>& edges) {
-        multiset<long long> XoredVals; 
         long long ans = 0;
+        multiset<long long> XoredVals; 
         for(int i = 0; i < A.size(); ++i){
             XoredVals.insert((A[i] ^ k) - A[i]); 
             ans += A[i];
         }
-        auto it = XoredVals.rbegin(); 
         bool flag = 0;
+        auto it = XoredVals.rbegin(); 
         for(; it != XoredVals.rend(); ++it){
             if(*it >= 0) {ans += *it;}
             else           {break;}
