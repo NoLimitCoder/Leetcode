@@ -1,19 +1,22 @@
-#pragma GCC optimize("O3,unroll-loops")
 class Solution {
 public:
-
-    int mod(int a, int &k){
-        return ((a%k)+k)%k;
-    }
-    int subarraysDivByK(vector<int>& nums, int k) {
-        int mp[10005] = {}; mp[0]++;
-        int ans = 0, sum = 0;
-        for(int i = 0; i<nums.size(); ++i){
-            sum = mod(sum+mod(nums[i],k),k);
-            ans += mp[sum];
-            mp[sum]++;
+    int subarraysDivByK(vector<int>& A, int k) {
+        int n = A.size();
+        for(int i = 0; i<n; ++i){ 
+            if(A[i] < 0) A[i] += ((abs(A[i])/k)+1)*k; 
+            A[i] %= k;
+        }
+        vector<int> P(n+1);
+        for(int i = 0; i<n; ++i){
+            P[i] = A[i]; if(i) P[i] += P[i-1];
+            P[i] %= k;
+        }
+        map<int,int> mp; mp[0] = 1;
+        int ans = 0;
+        for(int i = 0; i<n; ++i){
+            ans += mp[P[i]];
+            mp[P[i]]++;
         }
         return ans;
-
     }
 };
