@@ -9,15 +9,15 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-#pragma GCC optimize("O3,unroll-loops")
 class Solution {
 public:
-    int dfs(TreeNode* root, int &mx){
+
+    int dfs(TreeNode* root, int &mx) {
         if(root == NULL) return 0;
-        int left = dfs(root->left,mx), right = dfs(root->right,mx);
-        int tmp = max({left + root->val, right + root->val, root->val});
-        mx = max({mx, tmp, left + right + root->val});
-        return tmp;
+        int l = dfs(root->left,mx), m = root->val, r = dfs(root->right,mx);
+        int cur = max({l+m, m, m+r});
+        mx = max({mx,cur, l+m+r});
+        return cur;
     }
 
     int maxPathSum(TreeNode* root) {
