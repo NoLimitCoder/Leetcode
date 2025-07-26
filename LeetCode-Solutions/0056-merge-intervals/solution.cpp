@@ -1,23 +1,13 @@
-#define deb(x) cout << #x << ": " << x << '\n';
-
-
 class Solution {
 public:
-
-
-
-    vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        int n = intervals.size();
-        sort(intervals.begin(), intervals.end());
-        vector<vector<int>> output;
-        for(auto interval : intervals){
-            if(output.empty() || output.back()[1] < interval[0]){
-                output.push_back(interval);
-            }
-            else{
-                output.back()[1] = max(output.back()[1], interval[1]);
-            }
-        }
-        return output;
+    vector<vector<int>> merge(vector<vector<int>>& A) {
+     sort(A.begin(), A.end()); vector<vector<int>> ans;
+     for(auto it : A){
+        if(ans.empty()) {ans.push_back(it); continue;}
+        int l = it[0], r = it[1]; auto *end = &ans.back()[1];
+        if(l > *end) ans.push_back(it);
+        else *end = max(*end,r);
+     }
+     return ans;
     }
 };
