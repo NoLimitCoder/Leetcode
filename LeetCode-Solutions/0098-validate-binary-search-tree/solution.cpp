@@ -11,15 +11,16 @@
  */
 class Solution {
 public:
-//const int INF = 2e9;
+    typedef long long ll;
+    const ll INF = 4e18;
     bool isValidBST(TreeNode* root) {
-        return isValidBST(root, LLONG_MIN, LLONG_MAX);
+        return ok(root, -INF, INF);
     }
 
-    bool isValidBST(TreeNode* root, long long mn, long long mx) {
-        if(root==nullptr)return true;
-        if((root->val >= mx || root->val <= mn)) return false;
-        return isValidBST(root->left,mn,root->val) && isValidBST(root->right,root->val,mx);
+    bool ok(TreeNode* root, ll mn, ll mx) {
+        if(root == NULL) return 1;
+        if(root->val <= mn || root->val >= mx) return 0;
+        return ok(root->left, mn, root->val) && ok(root->right, root->val, mx);
     }
 
 };
