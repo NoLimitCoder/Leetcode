@@ -1,44 +1,36 @@
+#include <queue>
+using namespace std;
+
 class MedianFinder {
+    // max‐heap for the smaller half
+    priority_queue<int> lo;
+    // min‐heap for the larger half
+    priority_queue<int, vector<int>, greater<int>> hi;
 public:
-    multiset<double>ms;
     MedianFinder() {
-        ms.clear();
+        // nothing to do
     }
     
     void addNum(int num) {
-        ms.insert(num*1.0);
+        // 1) Always push into lo first
+        lo.push(num);
+        // 2) Balance: move the largest of lo into hi
+        hi.push(lo.top());
+        lo.pop();
+        
+        // 3) Maintain size property: lo can have at most one more than hi
+        if (hi.size() > lo.size()) {
+            lo.push(hi.top());
+            hi.pop();
+        }
     }
     
     double findMedian() {
-        int n = ms.size();
-        if(n&1){
-            int i = 0;
-            for (auto it = ms.begin(); it != ms.end(); it++) {
-                //cout << *it << ' ';
-                if(i == n/2)return *it;
-                i++;
-            }
-        }
-        else{
-            int i = 0; double ans = 0;
-               for (auto it = ms.begin(); it != ms.end(); it++) {
-                //cout << *it << ' ';
-                if(i == (n/2) -1){
-                ans+= *it;
-                it++;
-                //cout << *it << ' ';
-                return (ans + *it)/2.0;
-                }
-                i++;
-            }
-        }
-        return 0;
+        // If odd total, lo has one extra
+        if (lo.size() > hi.size())
+            return lo.top();
+        // even total → average of tops
+        return (lo.top() + hi.top()) * 0.5;
     }
 };
 
-/**
- * Your MedianFinder object will be instantiated and called as such:
- * MedianFinder* obj = new MedianFinder();
- * obj->addNum(num);
- * double param_2 = obj->findMedian();
- */
