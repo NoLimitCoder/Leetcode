@@ -1,18 +1,22 @@
-auto init = []() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-    return 'c';
-}();
 class Solution {
 public:
     int maxProfit(vector<int>& P) {
-        int dp_next_0 = 0, dp_next_1 = 0, dp_cur_0 = 0, dp_cur_1 = 0;
-        for(int i = P.size()-1; i>=0; --i){
-            dp_cur_1 = max(P[i]  + dp_next_0, dp_next_1);
-            dp_cur_0 = max(-P[i] + dp_next_1, dp_next_0);
-            dp_next_0 = dp_cur_0; dp_next_1 = dp_cur_1;
+        int n = P.size();
+        vector<vector<int>> dp(n,vector<int>(2));
+
+        //dp[i][0] -> max val at day i if sell
+        //dp[i][1] -> max val at day i if buy
+        /*
+            transitions: dp[i][0] -> dp[i][1] - val
+                         dp[i][1] -> dp[i][0] + val
+                         dp[i][0] - > dp[i][0] //hold right to buy
+                         dp[i][1] - > dp[i][1] //hold right to sell
+        */
+        dp[0][0] = 0; dp[0][1] = -P[0];
+        for(int i = 1; i<n; ++i){
+            dp[i][0] = max(dp[i-1][0],  dp[i-1][1] + P[i]);
+            dp[i][1] = max(dp[i-1][1],  dp[i-0][0] - P[i]);
         }
-        return dp_cur_0;
+        return  dp[n-1][0];
     }
 };
